@@ -1,7 +1,7 @@
 # Native-Todo
 
 # TO START
-yarn
-yarn start
+1) yarn
+2) yarn start
 
-# Install on your phone expo from playmarket or appStore and scan QR code from browser 
+Install on your phone expo from playmarket or appStore and scan QR code from browser 
