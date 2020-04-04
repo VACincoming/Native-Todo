@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { StyleSheet, Button, View, ScrollView } from 'react-native';
+import { StyleSheet, View, FlatList } from 'react-native';
 import {Navbar} from './src/Navbar'
 import {AddTodo} from './src/AddTodo'
 import {Todo} from './src/Todo'
@@ -15,7 +15,7 @@ export default function App() {
     }])
   }
 
-  const deleteTodo = id => {
+  const deleteTodo = id => () => {
     setTodos(prev => prev.filter(todo => todo.id !== id))
   }
 
@@ -23,6 +23,7 @@ export default function App() {
     const todosCopy = [...todos];
     const foundIndex = todosCopy.findIndex(elem => elem.id === todo.id);
     todosCopy[foundIndex].isDone = !todosCopy[foundIndex].isDone;
+    console.log(todos)
     setTodos(todosCopy);
   }
   return (
@@ -30,15 +31,15 @@ export default function App() {
       <Navbar title="Todo-App"/>
       <View style={styles.container}>
         <AddTodo onSubmit={addTodo}/>
-        <ScrollView>
-          {todos.map(todo => {
+        <FlatList
+          data={todos}
+          renderItem={({ item }) => {
             return(
-              <View key={todo.id} style={styles.todoWrapper}>
-                <Todo title={todo.title} onDone={onDone(todo)} isDone={todo.isDone}/>
-                <Button title='Delete' onPress={() => deleteTodo(todo.id)}/>
-              </View>
-          )})}  
-        </ScrollView>
+                <Todo title={item.title} id={item.id} onDone={onDone(item)} isDone={item.isDone} deleteTodo={deleteTodo(item.id)}/>
+            )
+          }}
+          keyExtractor={todo => todo.id}
+        />
       </View>
     </View>
   );
@@ -47,11 +48,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-  },
-  todoWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 270
   }
 });

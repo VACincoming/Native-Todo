@@ -1,22 +1,22 @@
 import React, {useState, useEffect} from 'react'
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native'
+import {Text, View, StyleSheet, TouchableOpacity, Button} from 'react-native'
 
-export const Todo = ({title, onDone, isDone}) => {
+export const Todo = ({title, onDone, isDone, deleteTodo}) => {
   const [textDecorationLine, setTextDecoration] = useState('none');
   useEffect(() => {
-    console.log(isDone)
     if(isDone) setTextDecoration('line-through')
     else setTextDecoration('none')
   }, [isDone])
   return (
-    <TouchableOpacity 
-      onPress={onDone}
-      style={[styles.todo, {textDecorationLine} ]}
-    >
-      <View>
+    <View style={styles.todoWrapper}>
+      <TouchableOpacity 
+        onPress={onDone}
+        style={[styles.todo, {textDecorationLine} ]}
+      >
         <Text style={{textDecorationLine}}>{title}</Text>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+      <Button title='Delete' onPress={() => deleteTodo(id)}/>
+    </View>
   )
 }
 
@@ -34,5 +34,11 @@ const styles = StyleSheet.create({
   },
   isDone: {
     textDecorationLine: 'line-through'
+  },
+  todoWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
   }
 })
